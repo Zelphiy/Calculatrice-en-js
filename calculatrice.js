@@ -3,9 +3,12 @@ const display = document.querySelector('#display');
 const numbersButtons = document.querySelectorAll('button[data-number]');
 const resetBtn = document.querySelector('.clear');
 
+const equals = document.querySelector('.equals');
+
 let number1 = '';
 let operator = '';
 let number2 = '';
+
 
 operators.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -31,6 +34,10 @@ operators.forEach(btn => {
         }
     });
 });
+
+function setToDisplay(displayValue) {
+    display.innerText = displayValue;
+}
 
 function addToDisplay(key){
     const last = display.innerHTML.slice(-1);
@@ -121,6 +128,46 @@ function storeValues() {
     operator = op;
     number2 = text.slice(idx + 1);
 }
+
+function sum(a,b){
+    let result = Number(a) + Number(b);
+    setToDisplay(result);
+}
+
+function sub(a, b) {
+    let result = Number(a) - Number(b);
+    setToDisplay(result);
+}
+
+function multiply(a, b) {
+    let result = Number(a) * Number(b);
+    setToDisplay(result);
+}
+
+function divide(a, b) {
+    let result = Number(a) / Number(b);
+    setToDisplay(result);
+}
+
+equals.addEventListener('click', () => {
+    if(number1 === '0' || number2 === '' || operator === ''){
+        return false;
+    }
+    switch (operator) {
+        case '+':
+            sum(number1, number2);
+            break;
+        case '-':
+            sub(number1, number2);
+            break;
+        case '*':
+            multiply(number1, number2);
+            break;
+        case '/':
+            divide(number1, number2);
+            break;
+    }
+})
 
 function resetCalculator() {
     number1 = '';
