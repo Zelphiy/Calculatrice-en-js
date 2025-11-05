@@ -2,9 +2,8 @@ const operators = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
 const numbersButtons = document.querySelectorAll('button[data-number]');
 const resetBtn = document.querySelector('.clear');
-
 const equals = document.querySelector('.equals');
-
+let flagAlreadyEquals = false;
 let number1 = '';
 let operator = '';
 let number2 = '';
@@ -55,8 +54,9 @@ function addToDisplay(key){
         return;
     }
     else {
-        if (display.innerHTML === "0" && !isOp) {
+        if (display.innerHTML === "0" && !isOp || flagAlreadyEquals && !isOp && !"+*-/".includes(display.innerHTML[display.innerHTML.length-1])) {
             display.innerHTML = key;
+            flagAlreadyEquals = false;
             storeValues();
         } else {
             display.innerHTML += key;
@@ -156,15 +156,19 @@ equals.addEventListener('click', () => {
     switch (operator) {
         case '+':
             sum(number1, number2);
+            flagAlreadyEquals = true;
             break;
         case '-':
             sub(number1, number2);
+            flagAlreadyEquals = true;
             break;
         case '*':
             multiply(number1, number2);
+            flagAlreadyEquals = true;
             break;
         case '/':
             divide(number1, number2);
+            flagAlreadyEquals = true;
             break;
     }
 })
