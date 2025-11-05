@@ -29,17 +29,22 @@ operators.forEach(btn => {
 });
 
 function addToDisplay(key){
-    const val = display.innerHTML;
-    const last = val.slice(-1);
+    const last = display.innerHTML.slice(-1);
     const isOp = "+-*/".includes(key);
     const lastIsOp = "+-*/".includes(last);
+    const haveOp = display.innerHTML.includes("+") || display.innerHTML.includes("-") || display.innerHTML.includes("*") || display.innerHTML.includes("-");
+    console.log(haveOp);
 
-    if (isOp && (val.length === 0 || val === "0")) {
+    if (isOp && (display.innerHTML.length === 0 || display.innerHTML === "0")) {
         return;
     } else if (isOp && lastIsOp) {
         return;
-    } else {
-        if (val === "0" && !isOp) {
+    } else if (haveOp && isOp)
+    {
+        return;
+    }
+    else {
+        if (display.innerHTML === "0" && !isOp) {
             display.innerHTML = key;
         } else {
             display.innerHTML += key;
