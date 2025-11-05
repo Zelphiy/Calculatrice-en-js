@@ -40,30 +40,33 @@ function setToDisplay(displayValue) {
 
 function addToDisplay(key){
     const last = display.innerHTML.slice(-1);
-    const isOp = "+-*/".includes(key);
+    const isOp = "+-*/".includes(String(key));
     const lastIsOp = "+-*/".includes(last);
-    const haveOp = display.innerHTML.includes("+") || display.innerHTML.includes("-") || display.innerHTML.includes("*") || display.innerHTML.includes("-");
-    console.log(haveOp);
+    const haveOp = /[+\-*/]/.test(display.innerHTML);
+
+    if (isOp) {
+        flagAlreadyEquals = false;
+    }
 
     if (isOp && (display.innerHTML.length === 0 || display.innerHTML === "0")) {
         return;
     } else if (isOp && lastIsOp) {
+        display.innerHTML = display.innerHTML.slice(0, -1);
+        addToDisplay(key);
+    } else if (haveOp && isOp) {
         return;
-    } else if (haveOp && isOp)
-    {
-        return;
-    }
-    else {
-        if (display.innerHTML === "0" && !isOp || flagAlreadyEquals && !isOp && !"+*-/".includes(display.innerHTML[display.innerHTML.length-1])) {
-            display.innerHTML = key;
+    } else {
+        if ((display.innerHTML === "0" && !isOp) || (flagAlreadyEquals && !isOp && !haveOp)) {
+            display.innerHTML = String(key);
             flagAlreadyEquals = false;
             storeValues();
         } else {
-            display.innerHTML += key;
+            display.innerHTML += String(key);
             storeValues();
         }
     }
 }
+
 
 numbersButtons.forEach(numbersBtn => {
     numbersBtn.addEventListener('click', (e) => {
