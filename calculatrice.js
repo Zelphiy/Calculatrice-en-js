@@ -112,7 +112,6 @@ numbersButtons.forEach(numbersBtn => {
     });
 });
 
-
 function storeValues() {
     const text = display.innerHTML;
     const match = text.match(/[+\-*/]/);
@@ -177,3 +176,54 @@ function resetCalculator() {
 }
 
 resetBtn.addEventListener('click', resetCalculator)
+
+document.addEventListener('keydown', (e) => {
+    const key = e.key;
+
+    if (/^[0-9]$/.test(key)) {
+        e.preventDefault();
+        addToDisplay(key);
+        return;
+    }
+
+    if ("+-*/".includes(key)) {
+        e.preventDefault();
+        addToDisplay(key);
+        return;
+    }
+    
+    switch (e.code) {
+        case 'NumpadAdd':
+            e.preventDefault();
+            addToDisplay('+');
+            return;
+        case 'NumpadSubtract':
+            e.preventDefault();
+            addToDisplay('-');
+            return;
+        case 'NumpadMultiply':
+            e.preventDefault();
+            addToDisplay('*');
+            return;
+        case 'NumpadDivide':
+            e.preventDefault();
+            addToDisplay('/');
+            return;
+        case 'NumpadEnter':
+            e.preventDefault();
+            equals.click();
+            return;
+    }
+    
+    if (key === 'Enter') {
+        e.preventDefault();
+        equals.click();
+        return;
+    }
+
+    if (key === 'Escape' || key.toLowerCase() === 'c') {
+        e.preventDefault();
+        resetCalculator();
+        return;
+    }
+});
