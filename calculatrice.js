@@ -1,10 +1,61 @@
 const operators = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
-const buttons = document.querySelector('.buttons');
 const numbersButtons = document.querySelectorAll('button[data-number]');
 let number1 = '';
 let operator = '';
 let number2 = '';
+
+
+operators.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        switch (e.currentTarget.dataset.operator) {
+            case '+':
+                console.log('+');
+                addToDisplay('+')
+                break;
+            case '-':
+                console.log('-');
+                addToDisplay('-')
+                break;
+            case '*':
+                console.log('*');
+                addToDisplay('*')
+                break;
+            case '÷':
+                console.log('/');
+                addToDisplay('/')
+                break;
+            default:
+                break;
+        }
+    });
+});
+
+function addToDisplay(key){
+    const last = display.innerHTML.slice(-1);
+    const isOp = "+-*/".includes(key);
+    const lastIsOp = "+-*/".includes(last);
+    const haveOp = display.innerHTML.includes("+") || display.innerHTML.includes("-") || display.innerHTML.includes("*") || display.innerHTML.includes("-");
+    console.log(haveOp);
+
+    if (isOp && (display.innerHTML.length === 0 || display.innerHTML === "0")) {
+        return;
+    } else if (isOp && lastIsOp) {
+        return;
+    } else if (haveOp && isOp)
+    {
+        return;
+    }
+    else {
+        if (display.innerHTML === "0" && !isOp) {
+            display.innerHTML = key;
+            storeValues();
+        } else {
+            display.innerHTML += key;
+            storeValues();
+        }
+    }
+}
 
 numbersButtons.forEach(numbersBtn => {
     numbersBtn.addEventListener('click', (e) => {
@@ -50,42 +101,9 @@ numbersButtons.forEach(numbersBtn => {
                 addToDisplay(0);
                 break;
         }
-    })
-})
-
-operators.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        switch (e.currentTarget.dataset.operator) {
-            case '+':
-                console.log('+');
-                addToDisplay('+');
-                break;
-            case '-':
-                console.log('-');
-                addToDisplay('-');
-                break;
-            case '*':
-                console.log('*');
-                addToDisplay('*');
-                break;
-            case '÷':
-                console.log('/');
-                addToDisplay('/');
-                break;
-            default:
-                break;
-        }
     });
 });
 
-function addToDisplay(key){
-    if (display.innerHTML === '0' && (typeof key === 'number' || /^[0-9]$/.test(String(key)))) {
-        display.innerHTML = String(key);
-    } else {
-        display.innerHTML += key;
-    }
-    storeValues();
-}
 
 function storeValues() {
     const text = display.innerHTML;
