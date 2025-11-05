@@ -41,27 +41,34 @@ function setToDisplay(displayValue) {
 
 function addToDisplay(key){
     const last = display.innerHTML.slice(-1);
-    const isOp = "+-*/".includes(key);
+    const isOp = "+-*/".includes(String(key));
     const lastIsOp = "+-*/".includes(last);
-    const haveOp = display.innerHTML.includes("+") || display.innerHTML.includes("-") || display.innerHTML.includes("*") || display.innerHTML.includes("-");
+    const haveOp = display.innerHTML.includes("+") || display.innerHTML.includes("-") || display.innerHTML.includes("*") || display.innerHTML.includes("/");
     console.log(haveOp);
 
     if (isOp && (display.innerHTML.length === 0 || display.innerHTML === "0")) {
         return;
-    } else if (isOp && lastIsOp) {
-        return;
-    } else if (haveOp && isOp)
-    {
-        return;
     }
-    else {
-        if (display.innerHTML === "0" && !isOp) {
-            display.innerHTML = key;
+
+    if (isOp) {
+        if (lastIsOp) {
+            // Remplace l'opérateur précédent par le nouveau
+            display.innerHTML = display.innerHTML.slice(0, -1) + key;
             storeValues();
-        } else {
-            display.innerHTML += key;
-            storeValues();
+            return;
         }
+        if (haveOp) {
+            // Un opérateur existe déjà et le 2e nombre a commencé -> empêcher l'ajout d'un autre opérateur
+            return;
+        }
+    }
+
+    if (display.innerHTML === "0" && !isOp) {
+        display.innerHTML = key;
+        storeValues();
+    } else {
+        display.innerHTML += key;
+        storeValues();
     }
 }
 
