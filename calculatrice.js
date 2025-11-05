@@ -3,42 +3,18 @@ const display = document.querySelector('#display');
 const numbersButtons = document.querySelectorAll('button[data-number]');
 const resetBtn = document.querySelector('.clear');
 const equals = document.querySelector('.equals');
+
 let flagAlreadyEquals = false;
 let number1 = '';
 let operator = '';
 let number2 = '';
 
 
-operators.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        switch (e.currentTarget.dataset.operator) {
-            case '+':
-                console.log('+');
-                addToDisplay('+')
-                break;
-            case '-':
-                console.log('-');
-                addToDisplay('-')
-                break;
-            case '*':
-                console.log('*');
-                addToDisplay('*')
-                break;
-            case '/':
-                console.log('/');
-                addToDisplay('/')
-                break;
-            default:
-                break;
-        }
-    });
-});
-
 function setToDisplay(displayValue) {
     display.innerText = displayValue;
 }
 
-function addToDisplay(key){
+function addToDisplay(key) {
     const last = display.innerHTML.slice(-1);
     const isOp = "+-*/".includes(String(key));
     const lastIsOp = "+-*/".includes(last);
@@ -65,6 +41,49 @@ function addToDisplay(key){
             storeValues();
         }
     }
+}
+
+function storeValues() {
+    const text = display.innerHTML;
+    const match = text.match(/[+\-*/]/);
+    if (!match) {
+        number1 = text;
+        operator = '';
+        number2 = '';
+        return;
+    }
+    const op = match[0];
+    const idx = text.indexOf(op);
+    number1 = text.slice(0, idx);
+    operator = op;
+    number2 = text.slice(idx + 1);
+}
+
+function sum(a, b) {
+    let result = Number(a) + Number(b);
+    setToDisplay(result);
+}
+
+function sub(a, b) {
+    let result = Number(a) - Number(b);
+    setToDisplay(result);
+}
+
+function multiply(a, b) {
+    let result = Number(a) * Number(b);
+    setToDisplay(result);
+}
+
+function divide(a, b) {
+    let result = Number(a) / Number(b);
+    setToDisplay(result);
+}
+
+function resetCalculator() {
+    number1 = '';
+    operator = '';
+    number2 = '';
+    display.innerHTML = '0';
 }
 
 
@@ -115,44 +134,33 @@ numbersButtons.forEach(numbersBtn => {
     });
 });
 
-function storeValues() {
-    const text = display.innerHTML;
-    const match = text.match(/[+\-*/]/);
-    if (!match) {
-        number1 = text;
-        operator = '';
-        number2 = '';
-        return;
-    }
-    const op = match[0];
-    const idx = text.indexOf(op);
-    number1 = text.slice(0, idx);
-    operator = op;
-    number2 = text.slice(idx + 1);
-}
-
-function sum(a,b){
-    let result = Number(a) + Number(b);
-    setToDisplay(result);
-}
-
-function sub(a, b) {
-    let result = Number(a) - Number(b);
-    setToDisplay(result);
-}
-
-function multiply(a, b) {
-    let result = Number(a) * Number(b);
-    setToDisplay(result);
-}
-
-function divide(a, b) {
-    let result = Number(a) / Number(b);
-    setToDisplay(result);
-}
+operators.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        switch (e.currentTarget.dataset.operator) {
+            case '+':
+                console.log('+');
+                addToDisplay('+')
+                break;
+            case '-':
+                console.log('-');
+                addToDisplay('-')
+                break;
+            case '*':
+                console.log('*');
+                addToDisplay('*')
+                break;
+            case '/':
+                console.log('/');
+                addToDisplay('/')
+                break;
+            default:
+                break;
+        }
+    });
+});
 
 equals.addEventListener('click', () => {
-    if(number1 === '0' || number2 === '' || operator === ''){
+    if (number1 === '0' || number2 === '' || operator === '') {
         return false;
     }
     switch (operator) {
@@ -174,15 +182,6 @@ equals.addEventListener('click', () => {
             break;
     }
 })
-
-function resetCalculator() {
-    number1 = '';
-    operator = '';
-    number2 = '';
-    display.innerHTML = '0';
-}
-
-resetBtn.addEventListener('click', resetCalculator)
 
 document.addEventListener('keydown', (e) => {
     const key = e.key;
@@ -234,3 +233,5 @@ document.addEventListener('keydown', (e) => {
         return;
     }
 });
+
+resetBtn.addEventListener('click', resetCalculator)
