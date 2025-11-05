@@ -40,19 +40,18 @@ function setToDisplay(displayValue) {
 
 function addToDisplay(key){
     const last = display.innerHTML.slice(-1);
-    const isOp = "+-*/".includes(key);
+    const isOp = "+-*/".includes(String(key));
     const lastIsOp = "+-*/".includes(last);
-    const haveOp = display.innerHTML.includes("+") || display.innerHTML.includes("-") || display.innerHTML.includes("*") || display.innerHTML.includes("-");
+    const haveOp = display.innerHTML.includes("+") || display.innerHTML.includes("-") || display.innerHTML.includes("*") || display.innerHTML.includes("/");
     console.log(haveOp);
 
     if (isOp && (display.innerHTML.length === 0 || display.innerHTML === "0")) {
         return;
-    } else if (isOp && lastIsOp) {
-        return;
-    } else if (haveOp && isOp)
-    {
-        return;
     }
+
+    if (isOp) {
+        if (lastIsOp) {
+            display.innerHTML = display.innerHTML.slice(0, -1) + key;
     else {
         if (display.innerHTML === "0" && !isOp || flagAlreadyEquals && !isOp && !"+*-/".includes(display.innerHTML[display.innerHTML.length-1])) {
             display.innerHTML = key;
@@ -61,7 +60,19 @@ function addToDisplay(key){
         } else {
             display.innerHTML += key;
             storeValues();
+            return;
         }
+        if (haveOp) {
+            return;
+        }
+    }
+
+    if (display.innerHTML === "0" && !isOp) {
+        display.innerHTML = key;
+        storeValues();
+    } else {
+        display.innerHTML += key;
+        storeValues();
     }
 }
 
