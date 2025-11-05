@@ -25,7 +25,7 @@ operators.forEach(btn => {
                 console.log('*');
                 addToDisplay('*')
                 break;
-            case '÷':
+            case '/':
                 console.log('/');
                 addToDisplay('/')
                 break;
