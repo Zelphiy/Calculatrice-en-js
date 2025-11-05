@@ -1,10 +1,11 @@
 const operators = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
 const numbersButtons = document.querySelectorAll('button[data-number]');
+const resetBtn = document.querySelector('.clear');
+
 let number1 = '';
 let operator = '';
 let number2 = '';
-
 
 operators.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -120,3 +121,12 @@ function storeValues() {
     operator = op;
     number2 = text.slice(idx + 1);
 }
+
+function resetCalculator() {
+    number1 = '';
+    operator = '';
+    number2 = '';
+    display.innerHTML = '0';
+}
+
+resetBtn.addEventListener('click', resetCalculator)
